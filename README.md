@@ -5,7 +5,11 @@ Addon que realiza recomendações de disciplinas na rede social Friendica desenv
 
 Navegue até a pasta de addons da sua instalação friendica e utilize o comando:
 
-`git clone https://github.com/RenanZX/RecomendationGOServer.git recomendapp`
+`git clone https://github.com/RenanZX/RecomendationAddon.git recomendapp`
+
+ou
+
+`git clone git@github.com:RenanZX/RecomendationAddon.git recomendapp`
 
 ## Instalando tabelas do Banco de Dados
 
