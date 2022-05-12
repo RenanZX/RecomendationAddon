@@ -57,16 +57,16 @@
     function compute_M1($uid, $rep){ //quantidade de mini badges recebidas pelo aluno
         $peso = 0;
         $cb = count_badges($uid);
-        if($cb > 12){
+        if($cb >= 1){
             $peso += 0.1;
         }
-        if($cb > 20){
+        if($cb > 5){
             $peso += 0.3;
         }
-        if($cb > 25){
+        if($cb > 10){
             $peso += 0.4;
         }
-        if($cb > 35){
+        if($cb > 40){
             $peso = 1;
         }
         return $peso;
@@ -78,7 +78,6 @@
         $like = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>1]);
         $deslike = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>0]);
         $total = $like + $deslike;
-        Logger::debug('Total == '.$total);
         if($total > 0){
           $p_deslike = $deslike/$total;
           $p_like = $like/$total;
@@ -92,7 +91,6 @@
               }
             }
           }
-          Logger::debug($p_like.'>'.$p_deslike);
           if($p_like > $p_deslike){
             $w += 0.3;
           }

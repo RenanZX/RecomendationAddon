@@ -122,9 +122,9 @@ use GuzzleHttp\Client;
       if(array_key_exists('delete', $_POST)){
         Comentarios\delete_coment($_POST['id_coment']);
       }else if(array_key_exists('like_x', $_POST)){
-        Comentarios\update_like($_POST['id_coment'],$_POST['id_profile_coment']);
+        Comentarios\update_like($_POST['id_coment'],$_POST['id']);
       }else if(array_key_exists('deslike_x', $_POST)){
-        Comentarios\update_deslike($_POST['id_coment'],$_POST['id_profile_coment']);
+        Comentarios\update_deslike($_POST['id_coment'],$_POST['id']);
       }
     } else if($_POST["type"] == '2'){ //Comentários do Perfil
       $id_destino = getIdUserProfile($a);
