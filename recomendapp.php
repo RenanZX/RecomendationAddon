@@ -1,3 +1,5 @@
+
+  
 <?php
 /**
  * Name: Recommend Addon
@@ -215,6 +217,7 @@ use GuzzleHttp\Client;
 
       //Logger::debug('profile: '.json_encode($profile));
       $perfil_coments = Comentarios\get_comentarios($profile_id);
+      $show_form = ($id != $profile_id);
 
       //Computar nivel do usuario e inserir a badge
       $dps_user = Comentarios\compute_association_coment($profile_id);
@@ -233,6 +236,7 @@ use GuzzleHttp\Client;
         '$deslike' => DI::baseUrl()->get().'/addon/recomendapp/assets/deslike.png',
         '$level' => DI::baseUrl()->get().'/addon/recomendapp/assets/'.$badge_level.'.png',
         '$user_id' => $id,
+        '$show_form' => $show_form,
         '$coments' => $perfil_coments,
         '$dps_user' => $first_two,
         '$all_dps' => $others
