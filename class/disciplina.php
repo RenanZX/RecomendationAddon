@@ -36,7 +36,6 @@
                 $arr_values = array_count_values($arr_ids);
                 $v_m = max($arr_values);
                 foreach($arr_values as $chave => $valor){
-                    Logger::debug('VALUES:'.$chave.','.$valor);
                     if($v_m >= $valor && $valor != -1){
                         DBA::insert('Bolha_recomendados', ['ID_Tag'=>$chave, 'ID_origem_perfil'=>$id_user], Database::INSERT_IGNORE);
                     }

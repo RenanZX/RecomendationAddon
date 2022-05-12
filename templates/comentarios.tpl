@@ -11,7 +11,9 @@
 
 </style>
 
+{{if $show_level}}
 {{include file="addon/recomendapp/templates/badge_level.tpl"}}
+{{/if}}
 
 <div id='profile-page' class='generic-page-wrapper'>
 <h3 id='title'>{{$title}}</h3>

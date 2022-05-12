@@ -75,8 +75,6 @@ use GuzzleHttp\Client;
       'accesskey' => 'dp',
     ];
 
-    print_r($b['tabs']);
-  
     $b['tabs'][] = array_splice($b['tabs'], 6, 0, [$comment_tb]);
     array_push($b['tabs'], $recommend_tb, $db_tb);
   }
@@ -124,9 +122,9 @@ use GuzzleHttp\Client;
       if(array_key_exists('delete', $_POST)){
         Comentarios\delete_coment($_POST['id_coment']);
       }else if(array_key_exists('like_x', $_POST)){
-        Comentarios\update_like($_POST['id_coment'],$_POST['id']);
+        Comentarios\update_like($_POST['id_coment'],$_POST['id_profile_coment']);
       }else if(array_key_exists('deslike_x', $_POST)){
-        Comentarios\update_deslike($_POST['id_coment'],$_POST['id']);
+        Comentarios\update_deslike($_POST['id_coment'],$_POST['id_profile_coment']);
       }
     } else if($_POST["type"] == '2'){ //Comentários do Perfil
       $id_destino = getIdUserProfile($a);
@@ -225,6 +223,7 @@ use GuzzleHttp\Client;
       $dps_user = Comentarios\compute_association_coment($profile_id);
       //$dps_user = ['Fisica','Quimica','Outros'];
       $badge_level = Badge\get_reputation_user($profile_id);
+
       $len = count($dps_user);
       $others = array_slice($dps_user, 2, $len);
       $first_two = array_slice($dps_user, 0, 2);
@@ -237,6 +236,7 @@ use GuzzleHttp\Client;
         '$like'=> DI::baseUrl()->get().'/addon/recomendapp/assets/like.png',
         '$deslike' => DI::baseUrl()->get().'/addon/recomendapp/assets/deslike.png',
         '$level' => DI::baseUrl()->get().'/addon/recomendapp/assets/'.$badge_level.'.png',
+        '$show_level' => ($badge_level != -1),
         '$user_id' => $id,
         '$show_form' => $show_form,
         '$coments' => $perfil_coments,
@@ -261,6 +261,7 @@ use GuzzleHttp\Client;
         '$user_id' => $id,
         '$feedb' => DI::baseUrl()->get().'/addon/recomendapp/assets/options.png',
         '$level' => DI::baseUrl()->get().'/addon/recomendapp/assets/'.$badge_level.'.png',
+        '$show_level' => ($badge_level != -1)
 		  ]);
     }
 

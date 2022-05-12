@@ -279,11 +279,11 @@
             $recomended = consulta_recomendados($id_perfil);
             $n_recomended = consulta_n_recomendados($id_perfil);
         }else{
+            count_cicles($id_perfil);
             $balance = get_balance($id_perfil);
             
             $recomended = recomendados($id_perfil, $balance[0]*$total_dps);
             $n_recomended = n_recomendados($id_perfil, $balance[1]*$total_dps);
-            count_cicles($id_perfil);
         }
         $table = [
             'comunidade' => $comunidade,

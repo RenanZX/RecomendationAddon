@@ -50,8 +50,9 @@
     
 </style>
 
-
+{{if $show_level}}
 {{include file="addon/recomendapp/templates/badge_level.tpl"}}
+{{/if}}
 
 {{include file="addon/recomendapp/templates/form_subdp.tpl"}}
 

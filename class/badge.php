@@ -15,8 +15,9 @@
         $M2 = compute_M2($id_user, $r);
         $M3 = compute_M3($id_user, $r);
         $M4 = compute_M4($id_user, $r);
+        Logger::debug('M1='.$M1.',M2='.$M2.',M3='.$M3.'M4='.$M4);
         $v = ($M1 + $M2 + $M3 + $M4) / 4;
-        Logger::debug('Chamando a funcao de calculo de reputacao');
+        Logger::debug('Calculo de reputacao id:'.$id_user);
         update_reputation($id_user, $v);
     }
 
@@ -38,18 +39,19 @@
         $r = DBA::selectFirst('Badge', ['Reputacao'], ['ID_perfil'=>$id_user]);
         if(DBA::isResult($r)){
           $res = $r['Reputacao'];
-          if($res >= 0 && $res < 0.3){
+          $res = $res * 100;
+          if($res > 0 && $res < 30){
             return 'LBronze';
-          }else if($res >= 0.3 && $res < 0.7){
+          }else if($res >= 30 && $res < 70){
             return 'LPrata';
-          }else{
+          }else if($res >= 70){
             return 'LOuro';
           }
         }
       }catch(Exception $e){
         Logger::debug($e->getMessage());
       }
-      return 'LBronze';
+      return -1;
     }
 
     function compute_M1($uid, $rep){ //quantidade de mini badges recebidas pelo aluno
@@ -76,6 +78,7 @@
         $like = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>1]);
         $deslike = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>0]);
         $total = $like + $deslike;
+        Logger::debug('Total == '.$total);
         if($total > 0){
           $p_deslike = $deslike/$total;
           $p_like = $like/$total;
@@ -89,6 +92,7 @@
               }
             }
           }
+          Logger::debug($p_like.'>'.$p_deslike);
           if($p_like > $p_deslike){
             $w += 0.3;
           }
