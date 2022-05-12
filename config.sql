@@ -1,0 +1,69 @@
+CREATE TABLE IF NOT EXISTS Comment_PF(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  ID_destino INTEGER,
+  Badge INTEGER,
+  Tag_ID INTEGER,
+  Data DATETIME NOT NULL;
+  Comentario VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS Feedback_Comment_PF(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  ID_coment INTEGER,
+  Tipo INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS Categorias(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Tag VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS Disciplinas(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Nome VARCHAR(500),
+  Descricao VARCHAR(500),
+  Tipo INT,
+  Avaliacao DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS Badge(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_perfil INTEGER,
+  Reputacao DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS Bolha_recomendados(
+  ID_origem_perfil INTEGER,
+  ID_Tag INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS Link_Tag(
+  ID_disciplina INTEGER,
+  ID_Tag INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS Recomendados(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  ID_disciplina INTEGER,
+  Tipo INTEGER,
+  Data DATE NOT NULL,
+  Ciclos INTEGER
+);
+--adicionar data e Tipo em recomendados
+CREATE TABLE IF NOT EXISTS Feedback_Comment_DP(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  ID_disciplina INTEGER,
+  Estrelas INTEGER,
+  Data DATETIME NOT NULL;
+  Comentario VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS Feedback_Ranked_Recomendations(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  Estrelas INTEGER
+);
