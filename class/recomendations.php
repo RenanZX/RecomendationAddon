@@ -105,7 +105,6 @@
                     'Nome' => $r['Nome']
                 ]);
             }
-            Logger::debug('Disciplinas nao recomendadas: '.json_encode($dps));
             
         }catch(Exception $e){
             Logger::debug($e->getMessage());
@@ -176,7 +175,7 @@
                 $ciclos = $r['Ciclos'];
                 $id_dp = $r['ID_disciplina'];
 
-                if($ciclos > 0){
+                if($ciclos > 0 && $r['Tipo'] != 0){
                     $ciclos--;
                     DBA::update('Recomendados',['Ciclos'=>$ciclos],['ID_origem_perfil'=>$id_perfil]);
                 }else{
@@ -200,7 +199,9 @@
 
         try{
             foreach($dps as $dp){
-                DBA::insert('Recomendados',['ID_disciplina'=>$dp['ID'],'ID_origem_perfil'=>$id_perfil,'Ciclos'=>$m, 'Tipo'=>$tipo, 'Data'=>$today],Database::INSERT_IGNORE);
+                if(!DBA::exists('Recomendados',['ID_disciplina'=>$dp['ID'], 'ID_origem_perfil'=>$id_perfil])){
+                    DBA::insert('Recomendados',['ID_disciplina'=>$dp['ID'],'ID_origem_perfil'=>$id_perfil,'Ciclos'=>$m, 'Tipo'=>$tipo, 'Data'=>$today]);
+                }
             }
         }catch(Exception $e){
             Logger::debug($e->getMessage());
@@ -273,22 +274,14 @@
         $n_recomended = [];
         $comunidade = false;
         $total_dps = get_total_dps();
-
+  
         if(today_recomended($id_perfil)){
             $recomended = consulta_recomendados($id_perfil);
-            if(empty($recomended)){
-                $comunidade = true;
-                $recomended = consulta_comunidade_recomendados($id_perfil);
-            }
             $n_recomended = consulta_n_recomendados($id_perfil);
         }else{
             $balance = get_balance($id_perfil);
-            if(check_buble($id_perfil)){
-                $recomended = recomendados($id_perfil, $balance[0]*$total_dps);
-            }else{
-                $comunidade = true;
-                $recomended = recomendados_comunidade($id_perfil, $balance[0]*$total_dps);
-            }
+            
+            $recomended = recomendados($id_perfil, $balance[0]*$total_dps);
             $n_recomended = n_recomendados($id_perfil, $balance[1]*$total_dps);
             count_cicles($id_perfil);
         }

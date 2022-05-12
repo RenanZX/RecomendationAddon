@@ -74,6 +74,8 @@ use GuzzleHttp\Client;
       'id' => 'disciplinas-tab',
       'accesskey' => 'dp',
     ];
+
+    print_r($b['tabs']);
   
     $b['tabs'][] = array_splice($b['tabs'], 6, 0, [$comment_tb]);
     array_push($b['tabs'], $recommend_tb, $db_tb);
