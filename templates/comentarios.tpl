@@ -16,7 +16,7 @@
 {{/if}}
 
 <div id='profile-page' class='generic-page-wrapper'>
-<h3 id='title'>{{$title}}</h3>
+<h3 id='title'><b>{{$title}}</b></h3>
 
 <br/>
 
