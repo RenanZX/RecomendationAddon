@@ -273,8 +273,9 @@
         $recomended = [];
         $n_recomended = [];
         $comunidade = false;
-        $total_dps = get_total_dps();
-  
+        //$total_dps = get_total_dps();
+        $total_dps = 10;
+
         if(today_recomended($id_perfil)){
             $recomended = consulta_recomendados($id_perfil);
             $n_recomended = consulta_n_recomendados($id_perfil);

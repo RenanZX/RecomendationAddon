@@ -26,7 +26,8 @@
 {{/foreach}}
 {{else}}
 <div>
-<p> Não existem comentarios</p>
+<p> Não existem comentarios no momento.</p> 
+<p> Comente alguma experiência com seu colega em uma disciplina ou monitoria.</p>
 </div>
 {{/if}}
 

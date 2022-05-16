@@ -41,15 +41,15 @@ use GuzzleHttp\Client;
   function recomendapp_install(){
     Hook::register('profile_tabs', 'addon/recomendapp/recomendapp.php', 'recomendapp_profile_tabs');
     //system('go run servidor/server.go')
-    Disciplina\install_dps();
     Disciplina\install_categories();
+    Disciplina\install_dps();
   }
 
   function recomedapp_uninstall(){
     Hook::unregister('profile_tabs', 'addon/recomendapp/recomendapp.php', 'recomendapp_profile_tabs');
     //system('killall servidor/server.go')
-    Disciplina\uninstall_dps();
     Disciplina\uninstall_categories();
+    Disciplina\uninstall_dps();
   }
 
   function recomendapp_profile_tabs($a, &$b){

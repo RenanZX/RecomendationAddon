@@ -62,16 +62,65 @@
 
     function install_dps(){
         try{
-            insert_dp(['Nome'=>'Leitura e Produção de Texto', 'Descricao'=>'Disciplina de Leitura e Produção de Texto'], ['Humanas']);
-            insert_dp(['Nome'=>'Calculo', 'Descricao'=>'Disciplina Calculo'], ['Calculo']);
-            insert_dp(['Nome'=>'Algoritmos e Programação de Computadores', 'Descricao'=>'Disciplina APC'], ['Programação']);
-            insert_dp(['Nome'=>'Programação Concorrente', 'Descricao'=>'Disciplina Programação Concorrente'] ,['Programação']);
-            insert_dp(['Nome'=>'Sistemas Operacionais', 'Descricao'=>'Disciplina SO'] ,['Programação', 'Sistemas']);
-            insert_dp(['Nome'=>'Introdução a Inteligência Articial', 'Descricao'=>'Disciplina sobre IA'], ['Inteligencia Artificial', 'Programação']);
-            insert_dp(['Nome'=>'Fundamentos Teóricos da Computação', 'Descricao'=>'Disciplina de Fundamentos Teóricos da Computação'], ['Programação', 'Calculo']);
-            insert_dp(['Nome'=>'Filosofia', 'Descricao'=>'Disciplina de Filosofia'], ['Humanas']);
-            insert_dp(['Nome'=>'Introdução a Economia', 'Descricao'=>'Disciplina de Economia'], ['Calculo']);
-            insert_dp(['Nome'=>'Topicos avançados em Nuvem Computacional', 'Descricao'=>'Disciplina de Nuvem Computacional'], ['Programação', 'Inteligência Artificial']);
+            //Disciplinas Dpto CIC
+            insert_dp(['Nome'=>'Algoritmos e Programação de Computadores', 'Descricao'=>'Disciplina APC'], ['CiC']);
+            insert_dp(['Nome'=>'Programação Concorrente', 'Descricao'=>'Disciplina Programação Concorrente'] ,['CiC']);
+            insert_dp(['Nome'=>'Sistemas Operacionais', 'Descricao'=>'Disciplina SO'] ,['CiC']);
+            insert_dp(['Nome'=>'Introdução a Inteligência Articial', 'Descricao'=>'Disciplina sobre IA'], ['CiC']);
+            insert_dp(['Nome'=>'Fundamentos Teóricos da Computação', 'Descricao'=>'Disciplina de Fundamentos Teóricos da Computação'], ['CiC']);
+            insert_dp(['Nome'=>'Topicos avançados em Nuvem Computacional', 'Descricao'=>'Disciplina de Nuvem Computacional'], ['CiC']);
+            insert_dp(['Nome'=>'Estrutura de Dados', 'Descricao'=>'Disciplina de ED'], ['CiC']);
+            insert_dp(['Nome'=>'Sistemas de Informação', 'Descricao'=>'Disciplina de SI'], ['CiC']);
+            insert_dp(['Nome'=>'Introdução a Desenvolvimento de Jogos', 'Descricao'=>'Disciplina de Introdução a Jogos'], ['CiC']);
+            insert_dp(['Nome'=>'Linguagens de Programação', 'Descricao'=>'Disciplina de LP'], ['CiC']);
+            
+            //Disciplinas Dpto Matematica
+            insert_dp(['Nome'=>'Calculo 1', 'Descricao'=>'Disciplina Calculo'], ['Matematica']);
+            insert_dp(['Nome'=>'Calculo 2', 'Descricao'=>'Disciplina Calculo'], ['Matematica']);
+            insert_dp(['Nome'=>'Calculo 3', 'Descricao'=>'Disciplina Calculo'], ['Matematica']);
+            insert_dp(['Nome'=>'Introdução a Algebra Linear', 'Descricao'=>'Disciplina IAL'], ['Matematica']);
+            insert_dp(['Nome'=>'Algebra 1', 'Descricao'=>'Disciplina Algebra 1'], ['Matematica']);
+            insert_dp(['Nome'=>'Teoria dos Numeros 1', 'Descricao'=>'Disciplina Teoria dos Numeros'], ['Matematica']);
+            insert_dp(['Nome'=>'Algebra Linear', 'Descricao'=>'Disciplina Algebra Linear'], ['Matematica']);
+            insert_dp(['Nome'=>'Calculo Numérico', 'Descricao'=>'Disciplina Calculo Numérico'], ['Matematica']);
+            insert_dp(['Nome'=>'Introdução a Teoria dos Grafos', 'Descricao'=>'Disciplina Grafos'], ['Matematica']);
+            insert_dp(['Nome'=>'Geometria Analítica Para Matemática', 'Descricao'=>'Disciplina Geometria'], ['Matematica']);
+
+            //Disciplinas Dpto Economia
+            insert_dp(['Nome'=>'Introdução a Economia', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            insert_dp(['Nome'=>'Formação Econômica do Brasil', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            insert_dp(['Nome'=>'Econometria', 'Descricao'=>'Disciplina de Econometria'], ['Economia']);
+            insert_dp(['Nome'=>'Economia Industrial', 'Descricao'=>'Disciplina de Economia Industrial'], ['Economia']);
+            insert_dp(['Nome'=>'Economia do setor público', 'Descricao'=>'Disciplina de Economia Setor Publico'], ['Economia']);
+            insert_dp(['Nome'=>'Economia Monetária', 'Descricao'=>'Disciplina de Economia Monetaria'], ['Economia']);
+            insert_dp(['Nome'=>'Teoria do Desenvolvimento Econômico', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            insert_dp(['Nome'=>'Microeconomia Ambiental', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            insert_dp(['Nome'=>'Economia Quantitativa 1', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            insert_dp(['Nome'=>'Contabilidade Nacional', 'Descricao'=>'Disciplina de Economia'], ['Economia']);
+            //Disciplinas Dpto Linguas
+
+            insert_dp(['Nome'=>'Pesquisa em Tradução', 'Descricao'=>'Disciplina de Pesquisa em Traducao'], ['Linguas']);
+            insert_dp(['Nome'=>'Ensino de Espanhol como lingua estrangeira', 'Descricao'=>'Disciplina de Espanhol'], ['Linguas']);
+            insert_dp(['Nome'=>'Prática Italiano Oral e Escrito', 'Descricao'=>'Disciplina de Italiano'], ['Linguas']);
+            insert_dp(['Nome'=>'Tradução de Textos Literários', 'Descricao'=>'Disciplina de Literatura'], ['Linguas']);
+            insert_dp(['Nome'=>'Versão de Textos Literários', 'Descricao'=>'Versão de Textos Literários'], ['Linguas']);
+            insert_dp(['Nome'=>'Lingua Neerlandesa(Holandês) 1', 'Descricao'=>'Disciplina de Linguas'], ['Linguas']);
+            insert_dp(['Nome'=>'Língua Neerlandesa(Holandês) 2', 'Descricao'=>'Disciplina de Linguas'], ['Linguas']);
+            insert_dp(['Nome'=>'Laboratório de Texto 1', 'Descricao'=>'Disciplina de Texto'], ['Linguas']);
+            insert_dp(['Nome'=>'Teoria da Tradução 1', 'Descricao'=>'Disciplina de Traducao'], ['Linguas']);
+            insert_dp(['Nome'=>'Japonês 1', 'Descricao'=>'Disciplina de Japones'], ['Linguas']);
+            //Disciplinas Dpto Musica
+
+            insert_dp(['Nome'=>'Instrumento Principal Violino 1', 'Descricao'=>'Disciplina de Violino'], ['Musica']);
+            insert_dp(['Nome'=>'Harmonia na Música Popular 1', 'Descricao'=>'Disciplina de Harmonia'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumento Principal Piano 1', 'Descricao'=>'Disciplina de Piano'], ['Musica']);
+            insert_dp(['Nome'=>'Música de Tradição Oral Performática', 'Descricao'=>'Disciplina de Música'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumento Principal Clarineta 1', 'Descricao'=>'Disciplina de Clarineta'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumento Principal Canto 1', 'Descricao'=>'Disciplina de Canto'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumento Principal Trompete 1', 'Descricao'=>'Disciplina de Trompete'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumento Principal Guitarra 1', 'Descricao'=>'Disciplina de Guitarra'], ['Musica']);
+            insert_dp(['Nome'=>'Instrumentação e Orquestração 1', 'Descricao'=>'Disciplina de Orquestra'], ['Musica']);
+            insert_dp(['Nome'=>'Canto Coral 1', 'Descricao'=>'Disciplina de Canto'], ['Musica']);
         }catch(Exception $e){
             Logger::debug($e->getMessage());
         }
@@ -107,11 +156,11 @@
 
     function install_categories(){
         try{
-            DBA::insert('Categorias', ['Tag'=>'Programação']);
-            DBA::insert('Categorias', ['Tag'=>'Sistemas']);
-            DBA::insert('Categorias', ['Tag'=>'Calculo']);
-            DBA::insert('Categorias', ['Tag'=>'Humanas']);
-            DBA::insert('Categorias', ['Tag'=>'Inteligência Artificial']);
+            DBA::insert('Categorias', ['Tag'=>'CiC']);
+            DBA::insert('Categorias', ['Tag'=>'Matematica']);
+            DBA::insert('Categorias', ['Tag'=>'Economia']);
+            DBA::insert('Categorias', ['Tag'=>'Musica']);
+            DBA::insert('Categorias', ['Tag'=>'Linguas']);
         }catch(Exception $e){
             Logger::debug($e->getMessage());
         }
