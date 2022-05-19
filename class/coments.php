@@ -27,9 +27,27 @@ function get_likes($id){
     }
   }
 
+  function get_likes_dp($id){
+    try{
+      $count = DBA::count('Feedback_Comment_DP', ['ID_coment'=>$id, 'Tipo'=>1]);
+      return $count;
+    }catch(Exception $e){
+      return 0;
+    }
+  }
+
   function get_deslikes($id){
     try{
       $count = DBA::count('Feedback_Comment_PF', ['ID_coment'=>$id, 'Tipo'=>0]);
+      return $count;
+    }catch(Exception $e){
+      return 0;
+    }
+  }
+
+  function get_deslikes_dp($id){
+    try{
+      $count = DBA::count('Feedback_Comment_DP', ['ID_coment'=>$id, 'Tipo'=>0]);
       return $count;
     }catch(Exception $e){
       return 0;
@@ -100,18 +118,27 @@ function get_likes($id){
 
   function get_comentarios_dp($id){
     try{
-      $q = DBA::select('Feedback_Comment_DP', [], array('ID_disciplina'=>$id),[]);
+      $q = DBA::select('Comment_DP', [], array('ID_disciplina'=>$id),[]);
       $perfil_coments = [];
       
       while($r = DBA::fetch($q)){
         $profile = Profile::getByUID($r['ID_origem_perfil']);
+        $likes = get_likes_dp($r['ID']);
+        $deslikes = get_deslikes_dp($r['ID']);
+        $badge = Badge\compute_badge_coment_dp($likes,$deslikes, $r['ID']);
+        if($badge != ''){
+          $badge = DI::baseUrl()->get().'/addon/recomendapp/assets/'.$badge.'.png';
+        }
         
         $perfil_coments[] = [
           'id' => $r['ID'],
           'photo' => $profile['photo'],
           'name' => $profile['name'],
           'comment' => $r['Comentario'],
-          'stars' => $r['Estrelas']
+          'stars' => $r['Estrelas'],
+          'likes' => $likes,
+          'deslikes' => $deslikes,
+          'badge' => $badge
         ];
       }
 
@@ -122,27 +149,30 @@ function get_likes($id){
     return [];
   }
 
-  function update_like($id_coment, $id_user){
+  function update_like($id_coment, $id_user, $type){
     try{
-      $q = DBA::select('Feedback_Comment_PF', [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
+      $consulta = ($type == '1'? 'Feedback_Comment_PF' : 'Feedback_Comment_DP');
+      $q = DBA::select($consulta, [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
       if($r = DBA::fetch($q)){
-        DBA::delete('Feedback_Comment_PF', ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>1]);
+        DBA::delete($consulta, ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>1]);
       }else{
-        DBA::insert('Feedback_Comment_PF', ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>1]);
+        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>1]);
       }
     }catch(Exception $e){
       Logger::debug($e->getMessage());
     }
   }
 
-  function update_deslike($id_coment, $id_user){
+  function update_deslike($id_coment, $id_user, $type){
     try{
-      $q = DBA::select('Feedback_Comment_PF', [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
+      $consulta = ($type == '1'? 'Feedback_Comment_PF' : 'Feedback_Comment_DP');
+      
+      $q = DBA::select($consulta, [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
       
       if($r = DBA::fetch($q)){
-        DBA::delete('Feedback_Comment_PF', ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>0]);
+        DBA::delete($consulta, ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>0]);
       }else{
-        DBA::insert('Feedback_Comment_PF', ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>0]);
+        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>0]);
       }
     }catch(Exception $e){
       Logger::debug($e->getMessage());
@@ -151,7 +181,7 @@ function get_likes($id){
 
   function is_dp_comentada($uid, $dp_id){
     try{
-      $r = DBA::selectFirst('Feedback_Comment_DP', [], ['ID_origem_perfil'=>$uid, 'ID_disciplina'=>$dp_id]);
+      $r = DBA::selectFirst('Comment_DP', [], ['ID_origem_perfil'=>$uid, 'ID_disciplina'=>$dp_id]);
       if(DBA::isResult($r)){
         return true;
       }
@@ -181,12 +211,12 @@ function get_likes($id){
       $today = date('Y-m-d H:i:s');
       Recomendador\marcar_disciplina_indef_id($id_origem, $id_dp);
       
-      $r = DBA::selectFirst('Feedback_Comment_DP', [], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
+      $r = DBA::selectFirst('Comment_DP', [], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
       
       if(DBA::isResult($r)){
-        DBA::update('Feedback_Comment_DP', ['Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
+        DBA::update('Comment_DP', ['Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
       }else{
-        DBA::insert('Feedback_Comment_DP', ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp, 'Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today]);
+        DBA::insert('Comment_DP', ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp, 'Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today]);
       }
 
       Disciplina\update_evaluation($id_dp);

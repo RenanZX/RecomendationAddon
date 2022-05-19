@@ -88,9 +88,9 @@
     {{/if}}
 </table>
 
-<table id="recomend">
+<!--table id="recomend">
     <tr><th>Projetos que você vai gostar</th></tr>
     <tr><td>Intelgência de Dados</td></tr>
-</table>
+</table-->
 
 </div>

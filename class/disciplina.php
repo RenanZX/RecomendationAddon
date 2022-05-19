@@ -42,14 +42,14 @@
                 }
 
                 //Pegar as disciplinas mais bem avaliadas pelo usuario
-                $q = DBA::select('Feedback_Comment_DP', ['Estrelas'], ['ID_origem_perfil'=>$id_user]);
+                $q = DBA::select('Comment_DP', ['Estrelas'], ['ID_origem_perfil'=>$id_user]);
                 $arr_stars = [];
                 while($r = DBA::fetch($q)){
                     array_push($arr_stars, $r['Estrelas']);
                 }
                 if(!empty($arr_stars)){
                     $max_star = max($arr_stars);
-                    $q = DBA::p('SELECT t2.ID_Tag FROM Feedback_Comment_DP as t1, Link_Tag as t2 WHERE t1.ID_disciplina = t2.ID_disciplina AND t1.ID_origem_perfil = ? AND t1.Estrelas >= ?',$id_user, $max_star);
+                    $q = DBA::p('SELECT t2.ID_Tag FROM Comment_DP as t1, Link_Tag as t2 WHERE t1.ID_disciplina = t2.ID_disciplina AND t1.ID_origem_perfil = ? AND t1.Estrelas >= ?',$id_user, $max_star);
                     while($r = DBA::fetch($q)){
                         DBA::insert('Bolha_recomendados',['ID_Tag'=>$r['ID_Tag'],'ID_origem_perfil'=>$id_user], Database::INSERT_IGNORE);
                     }
@@ -147,7 +147,7 @@
     function uninstall_dps(){
         try{
             DBA::e('TRUNCATE TABLE Disciplinas');
-            DBA::e('TRUNCATE TABLE Feedback_Comment_DP');
+            DBA::e('TRUNCATE TABLE Comment_DP');
             DBA::e('TRUNCATE TABLE Comment_PF');
         }catch(Exception $e){
             Logger::debug($e->getMessage());
@@ -214,7 +214,7 @@
 
     function update_evaluation($id_dp){
         try{
-            $q = DBA::select('Feedback_Comment_DP',['Estrelas'], ['ID_disciplina'=>$id_dp]);
+            $q = DBA::select('Comment_DP',['Estrelas'], ['ID_disciplina'=>$id_dp]);
             $count = 0;
             $stars = 0;
             while($r = DBA::fetch($q)){

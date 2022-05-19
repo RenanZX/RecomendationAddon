@@ -178,10 +178,40 @@
         return '';
       }
     }
+
+    function compute_badge_coment_dp($likes, $deslikes, $id_coment){
+      if($likes > $deslikes){ //Se o comentario estiver com mais likes do que deslikes o comentario recebe uma badge
+        $rq = $likes;
+        if($deslikes > 0){ //evita divisao por zero
+          $rq = $likes/$deslikes; //A badge é calculada em uma razão entre likes e deslikes
+        }  
+        if($rq > 0 && $rq < 10){ //De acordo com a razão calculada o usuário será premiado ou não;
+          update_badge_dp(BRONZE, $id_coment);
+          return 'Bronze_Medal';
+        }else if($rq >= 10 && $rq < 20){
+          update_badge_dp(PRATA, $id_coment);
+          return 'Silver_Medal';
+        }else if($rq >= 20){
+          update_badge_dp(OURO, $id_coment);
+          return 'Gold_Medal';
+        }
+      }else{
+        update_badge_dp(0, $id_coment);
+        return '';
+      }
+    }
   
     function update_badge($badge, $id_coment){
       try {
           $q = DBA::update('Comment_PF', array('Badge'=>$badge), array('ID'=>$id_coment));
+      } catch(Exception $e){
+          Logger::debug($e->getMessage());
+      }
+    }
+
+    function update_badge_dp($badge, $id_coment){
+      try {
+          $q = DBA::update('Comment_DP', array('Badge'=>$badge), array('ID'=>$id_coment));
       } catch(Exception $e){
           Logger::debug($e->getMessage());
       }
@@ -195,6 +225,10 @@
             while($r = DBA::fetch($q)){
                 $count+=$r['Badge'];
             }
+            $q = DBA::select('Comment_DP', [], array("`Badge` = ? OR `Badge` = ? OR `Badge` = ? AND `ID_origem_perfil` = ?",BRONZE, PRATA, OURO, $uid));
+            while($r = DBA::fetch($q)){
+                $count+=$r['Badge'];
+            } 
             return $count;
         } catch(Exception $e){
             Logger::debug($e->getMessage());

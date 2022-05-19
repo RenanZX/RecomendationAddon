@@ -27,7 +27,9 @@
 {{else}}
 <div>
 <p> Não existem comentarios no momento.</p> 
+{{if $show_form}}
 <p> Comente alguma experiência com seu colega em uma disciplina ou monitoria.</p>
+{{/if}}
 </div>
 {{/if}}
 

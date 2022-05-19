@@ -88,6 +88,7 @@
     <img id='badge' src={{$perfil_comment.badge}} />
     {{/if}}
     <input type='hidden' id='type' name='type' value='1' />
+    <input type='hidden' id='type_coment' name='type_coment' value='1' />
     <input type='hidden' id='id' name='id' value='{{$user_id}}' />
     <input type='hidden' id='id_profile_coment' name='id_profile_coment' value='{{$perfil_comment.id_perfil}}' /> 
     <input type='hidden' id='id_coment' name='id_coment' value='{{$perfil_comment.id}}' />

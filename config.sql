@@ -52,14 +52,22 @@ CREATE TABLE IF NOT EXISTS Recomendados(
   Data DATE NOT NULL,
   Ciclos INTEGER
 );
---adicionar data e Tipo em recomendados
-CREATE TABLE IF NOT EXISTS Feedback_Comment_DP(
+
+CREATE TABLE IF NOT EXISTS Comment_DP(
   ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ID_origem_perfil INTEGER,
   ID_disciplina INTEGER,
   Estrelas INTEGER,
+  Badge INTEGER,
   Data DATETIME NOT NULL;
   Comentario VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS Feedback_Comment_DP(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_origem_perfil INTEGER,
+  ID_coment INTEGER,
+  Tipo INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Feedback_Ranked_Recomendations(

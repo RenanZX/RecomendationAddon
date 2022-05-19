@@ -122,12 +122,12 @@ use GuzzleHttp\Client;
       if(array_key_exists('delete', $_POST)){
         Comentarios\delete_coment($_POST['id_coment']);
       }else if(array_key_exists('like_x', $_POST)){
-        if($_POST['id_profile_coment'] != $_POST['id']){ //checa se o aluno nao esta se endossando
-          Comentarios\update_like($_POST['id_coment'],$_POST['id']);
+        if($_POST['type_coment'] == '2' || $_POST['id_profile_coment'] != $_POST['id']){ //checa se o aluno nao esta se endossando
+          Comentarios\update_like($_POST['id_coment'],$_POST['id'], $_POST['type_coment']);
         }
       }else if(array_key_exists('deslike_x', $_POST)){
-        if($_POST['id_profile_coment'] != $_POST['id']){
-          Comentarios\update_deslike($_POST['id_coment'],$_POST['id']);
+        if($_POST['type_coment'] == '2' || $_POST['id_profile_coment'] != $_POST['id']){
+          Comentarios\update_deslike($_POST['id_coment'],$_POST['id'], $_POST['type_coment']);
         }
       }
     } else if($_POST["type"] == '2'){ //Comentários do Perfil
@@ -210,6 +210,8 @@ use GuzzleHttp\Client;
         '$title' => $dp['Nome'],
         '$description' => $dp['Descricao'],
         '$profile' => $profile_user,
+        '$like'=> DI::baseUrl()->get().'/addon/recomendapp/assets/like.png',
+        '$deslike' => DI::baseUrl()->get().'/addon/recomendapp/assets/deslike.png',
         '$star_comment' => DI::baseUrl()->get().'/addon/recomendapp/assets/rating.png',
         '$coments' => $perfil_coments,
         '$user_id' => $id,
