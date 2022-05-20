@@ -1,9 +1,16 @@
 <style>
 
+#profile-page {
+  overflow-y: auto;
+}
+
+#coment-page-section {
+  overflow-y: auto;
+}
+
 #profile-page h3{
     text-align: center;
 }
-
 
 #title {
   color: #5B5F63;
@@ -19,7 +26,7 @@
 <h3 id='title'><b>{{$title}}</b></h3>
 
 <br/>
-
+<div id='coment-page-section'>
 {{if $coments}}
 {{foreach $coments as $perfil_comment}}
 {{include file='addon/recomendapp/templates/coment.tpl'}}
@@ -32,7 +39,9 @@
 {{/if}}
 </div>
 {{/if}}
+</div>
 
 {{if $show_form}}
 {{include file='addon/recomendapp/templates/coment_form.tpl'}}
 {{/if}}
+</div>

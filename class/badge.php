@@ -221,11 +221,11 @@
         try{
             $count = 0;
 
-            $q = DBA::select('Comment_PF', [], array("`Badge` = ? OR `Badge` = ? OR `Badge` = ? AND `ID_origem_perfil` = ?",BRONZE, PRATA, OURO, $uid));
+            $q = DBA::select('Comment_PF', [], array("`Badge` >= ? AND `ID_origem_perfil` = ?",BRONZE, $uid));
             while($r = DBA::fetch($q)){
                 $count+=$r['Badge'];
             }
-            $q = DBA::select('Comment_DP', [], array("`Badge` = ? OR `Badge` = ? OR `Badge` = ? AND `ID_origem_perfil` = ?",BRONZE, PRATA, OURO, $uid));
+            $q = DBA::select('Comment_DP', [], array("`Badge` >= ? AND `ID_origem_perfil` = ?",BRONZE, $uid));
             while($r = DBA::fetch($q)){
                 $count+=$r['Badge'];
             } 
