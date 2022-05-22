@@ -23,6 +23,17 @@
         return -1;
     }
 
+    function insertb_exclusive($id_tag, $id_perfil){
+        try{
+            $r = DBA::selectFirst('Bolha_recomendados', ['ID_Tag'=>$id_tag, 'ID_origem_perfil'=>$id_perfil]);
+            if(DBA::isResult($r)){
+                DBA::insert('Bolha_recomendados', ['ID_Tag'=>$id_tag, 'ID_origem_perfil'=>$id_perfil], Database::INSERT_IGNORE);
+            }
+        }catch(Exception $e) {
+            Logger::debug($e->getMessage());
+        }
+    }
+
     function enter_in_buble($id_user){
         $arr_ids = [];
         try{
@@ -37,7 +48,7 @@
                 $v_m = max($arr_values);
                 foreach($arr_values as $chave => $valor){
                     if($v_m >= $valor && $valor != -1){
-                        DBA::insert('Bolha_recomendados', ['ID_Tag'=>$chave, 'ID_origem_perfil'=>$id_user], Database::INSERT_IGNORE);
+                        insertb_exclusive($chave, $id_user);
                     }
                 }
 
@@ -51,7 +62,7 @@
                     $max_star = max($arr_stars);
                     $q = DBA::p('SELECT t2.ID_Tag FROM Comment_DP as t1, Link_Tag as t2 WHERE t1.ID_disciplina = t2.ID_disciplina AND t1.ID_origem_perfil = ? AND t1.Estrelas >= ?',$id_user, $max_star);
                     while($r = DBA::fetch($q)){
-                        DBA::insert('Bolha_recomendados',['ID_Tag'=>$r['ID_Tag'],'ID_origem_perfil'=>$id_user], Database::INSERT_IGNORE);
+                        insertb_exclusive($r['ID_Tag'], $id_user);
                     }
                 }
             }

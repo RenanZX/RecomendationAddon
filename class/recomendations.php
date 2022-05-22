@@ -179,7 +179,7 @@
                     $ciclos--;
                     DBA::update('Recomendados',['Ciclos'=>$ciclos],['ID_origem_perfil'=>$id_perfil]);
                 }else{
-                    if($ciclos != -1){
+                    if($r['Tipo'] != 0){
                         DBA::delete('Recomendados',['ID_disciplina'=>$id_dp,'ID_origem_perfil'=>$id_perfil]);
                     }
                     $r = DBA::selectFirst('Disciplinas', ['ID_Tag'], ['ID'=>$id_dp]);

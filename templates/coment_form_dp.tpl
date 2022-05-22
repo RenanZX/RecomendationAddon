@@ -1,8 +1,11 @@
 <style>
 .comment-form {
-    position: absolute;
+    position: fixed;
+    display: block;
+    background-color: #FFF;
+    padding: 10px;
     bottom: 0;
-    left: 0;
+    left: 31.1%;
 }
 
 .comment-form div:first-child {

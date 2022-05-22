@@ -1,11 +1,8 @@
 <style>
 
-#profile-page {
-  overflow-y: auto;
-}
-
 #coment-page-section {
   overflow-y: auto;
+  margin-bottom: 45px;
 }
 
 #profile-page h3{

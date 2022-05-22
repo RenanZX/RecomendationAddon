@@ -105,7 +105,7 @@
       $w = 0;
       try{
         $today = date('Y-m-d');
-        $cr = DBA::count('Comment_PF', ['ID_origem_perfil = ? AND DATE(Data) = ?',$uid,$today]) + DBA::count('Comment_PF', ['ID_destino'=>$uid]);
+        $cr = DBA::count('Comment_PF', ['ID_origem_perfil = ? OR ID_destino = ? AND DATE(Data) = ?',$uid, $uid,$today]);
         if($cr > 2){
           $w += 0.1;
         }
