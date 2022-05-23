@@ -74,6 +74,7 @@
     display: block;
     background-color: #FFF;
     padding: 10px;
+    width: 655px;
     bottom: 0;
     left: 31.1%;
 }

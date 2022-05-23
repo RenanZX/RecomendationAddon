@@ -6,6 +6,7 @@
     padding: 10px;
     bottom: 0;
     left: 31.1%;
+    width: 655px;
 }
 
 .comment-form div:first-child {

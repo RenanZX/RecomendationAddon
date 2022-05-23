@@ -20,7 +20,7 @@
 {{/if}}
 
 <div id='profile-page' class='generic-page-wrapper'>
-<h3 id='title'><b>{{$title}}</b></h3>
+<h3 id='title'><b>{{$title}}{{if $coments}} ({{count($coments)}}){{/if}}</b></h3>
 
 <br/>
 <div id='coment-page-section'>
