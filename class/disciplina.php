@@ -26,7 +26,7 @@
     function insertb_exclusive($id_tag, $id_perfil){
         try{
             $r = DBA::selectFirst('Bolha_recomendados', ['ID_Tag'=>$id_tag, 'ID_origem_perfil'=>$id_perfil]);
-            if(DBA::isResult($r)){
+            if(!DBA::isResult($r)){
                 DBA::insert('Bolha_recomendados', ['ID_Tag'=>$id_tag, 'ID_origem_perfil'=>$id_perfil], Database::INSERT_IGNORE);
             }
         }catch(Exception $e) {
