@@ -196,10 +196,7 @@ function get_likes($id){
 
   function is_dp_comentada($uid, $dp_id){
     try{
-      $r = DBA::selectFirst('Comment_DP', [], ['ID_origem_perfil'=>$uid, 'ID_disciplina'=>$dp_id]);
-      if(DBA::isResult($r)){
-        return true;
-      }
+      return DBA::exists('Comment_DP', ['ID_origem_perfil'=>$uid, 'ID_disciplina'=>$dp_id]);
     }catch(Exception $e){
       Logger::debug($e->getMessage());
     }
@@ -226,9 +223,7 @@ function get_likes($id){
       $today = date('Y-m-d H:i:s');
       Recomendador\marcar_disciplina_indef_id($id_origem, $id_dp);
       
-      $r = DBA::selectFirst('Comment_DP', [], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
-      
-      if(DBA::isResult($r)){
+      if(DBA::exists('Comment_DP', ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp])){
         DBA::update('Comment_DP', ['Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today], ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp]);
       }else{
         DBA::insert('Comment_DP', ['ID_origem_perfil'=>$id_origem, 'ID_disciplina'=>$id_dp, 'Estrelas'=>$star, 'Comentario'=>$coment, 'Data'=>$today]);

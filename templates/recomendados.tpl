@@ -88,9 +88,22 @@
     {{/if}}
 </table>
 
-<!--table id="recomend">
+{{if $ProjetosR}}
+<table id="recomend">
     <tr><th>Projetos que você vai gostar</th></tr>
-    <tr><td>Intelgência de Dados</td></tr>
-</table-->
+    {{foreach $ProjetosR as $recomendado}}
+      <tr><td><a onclick="openFormDP('{{$recomendado.Nome}}')">{{$recomendado.Nome}}</a></td></tr>
+    {{/foreach}}
+</table>
+{{/if}}
+
+{{if $ProjetosNR}}
+  <table id="recomend">
+      <tr><th>Projetos que talvez você goste</th></tr>
+      {{foreach $ProjetosNR as $recomendado}}
+        <tr><td><a onclick="openFormDP('{{$recomendado.Nome}}')">{{$recomendado.Nome}}</a></td></tr>
+      {{/foreach}}
+  </table>
+{{/if}}
 
 </div>

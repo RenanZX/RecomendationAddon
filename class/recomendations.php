@@ -6,6 +6,7 @@
     use Friendica\Core\Logger;
     use Friendica\Database\DBA;
     use Friendica\Database\Database;
+    date_default_timezone_set('America/Sao_Paulo');
 
     function insert_feedback($id_perfil, $stars){
         try{
@@ -35,15 +36,6 @@
         return [0.5, 0.5];
     }
 
-    function get_total_dps(){
-        try{
-            return DBA::count('Disciplinas', []);
-        }catch(Exception $e){
-            Logger::debug($e->getMessage());
-        }
-        return 10;
-    }
-
     function check_buble($id_perfil){ //checa se existe uma bolha para um usuario
         try{
             return DBA::exists('Bolha_recomendados', ['ID_origem_perfil'=>$id_perfil]);
@@ -53,10 +45,10 @@
         return false;
     }
 
-    function recomendados($id_perfil, $balance){ //Tipo origem = 1
+    function recomendados($id_perfil, $balance, $type = 1){ //Tipo origem = 1
         $dps = [];
         try{
-            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = 1 AND ID IN (SELECT ID_disciplina FROM Link_Tag WHERE ID_Tag IN (SELECT ID_Tag FROM Bolha_recomendados WHERE ID_origem_perfil = ?) AND ID_disciplina NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?)) ORDER BY RAND() LIMIT ".$balance,$id_perfil, $id_perfil);
+            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = ".$type." AND ID IN (SELECT ID_disciplina FROM Link_Tag WHERE ID_Tag IN (SELECT ID_Tag FROM Bolha_recomendados WHERE ID_origem_perfil = ?) AND ID_disciplina NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?)) ORDER BY RAND() LIMIT ".$balance,$id_perfil, $id_perfil);
             while($r = DBA::fetch($q)){
                 array_push($dps, [
                     'ID' => $r['ID'],
@@ -74,10 +66,10 @@
         return $dps;
     }
 
-    function recomendados_comunidade($id_perfil, $balance){
+    function recomendados_comunidade($id_perfil, $balance, $type = 1){
         $dps = [];
         try{
-            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = 1 AND ID NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?) AND Avaliacao > 3.5 ORDER BY RAND() LIMIT ".$balance,$id_perfil);
+            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = ".$type." AND ID NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?) AND Avaliacao > 3.5 ORDER BY RAND() LIMIT ".$balance,$id_perfil);
             while($r = DBA::fetch($q)){
                 array_push($dps, [
                     'ID' => $r['ID'],
@@ -95,10 +87,10 @@
         return $dps;
     }
     
-    function n_recomendados($id_perfil, $balance){ //Tipo origem = 2
+    function n_recomendados($id_perfil, $balance, $type = 1){ //Tipo origem = 2
         $dps = [];
         try{
-            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = 1 AND ID IN (SELECT ID_disciplina FROM Link_Tag WHERE ID_Tag NOT IN (SELECT ID_Tag FROM Bolha_recomendados WHERE ID_origem_perfil = ?) AND ID NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?)) ORDER BY RAND() LIMIT ".$balance,$id_perfil, $id_perfil);
+            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = ".$type." AND ID IN (SELECT ID_disciplina FROM Link_Tag WHERE ID_Tag NOT IN (SELECT ID_Tag FROM Bolha_recomendados WHERE ID_origem_perfil = ?) AND ID NOT IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ?)) ORDER BY RAND() LIMIT ".$balance,$id_perfil, $id_perfil);
             while($r = DBA::fetch($q)){
                 array_push($dps, [
                     'ID' => $r['ID'],
@@ -113,15 +105,14 @@
             marcar_disciplinas($id_perfil, $dps, 2);
         }
         
-        Logger::debug("values dps:".json_encode($dps));
         return $dps;
     }
 
-    function consulta_recomendados($id_user){
+    function consulta_recomendados($id_user, $type = 1){
         $dps = [];
         try{
             $today = date('Y-m-d');
-            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = 1 AND ID IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil =? AND Tipo = ? AND DATE(Data) = ?) ORDER BY RAND()",$id_user,1,$today);
+            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = ".$type." AND ID IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil =? AND Tipo = ? AND DATE(Data) = ?) ORDER BY RAND()",$id_user,1,$today);
             while($r = DBA::fetch($q)){
                 array_push($dps, [
                     'ID' => $r['ID'],
@@ -151,11 +142,11 @@
         return $dps;
     }
 
-    function consulta_n_recomendados($id_user){
+    function consulta_n_recomendados($id_user, $type = 1){
         $dps = [];
         try{
             $today = date('Y-m-d');
-            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = 1 AND ID IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?) ORDER BY RAND()",$id_user,2, $today);
+            $q = DBA::p("SELECT * FROM Disciplinas WHERE Tipo = ".$type." AND ID IN (SELECT ID_disciplina FROM Recomendados WHERE ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?) ORDER BY RAND()",$id_user,2, $today);
             while($r = DBA::fetch($q)){
                 array_push($dps, [
                     'ID' => $r['ID'],
@@ -272,24 +263,32 @@
     function get_recommendations($id_perfil){
         $recomended = [];
         $n_recomended = [];
+        $proj_recomend = [];
+        $proj_n_recomend = [];
         $comunidade = false;
         //$total_dps = get_total_dps();
         $total_dps = 10;
 
         if(today_recomended($id_perfil)){
-            $recomended = consulta_recomendados($id_perfil);
-            $n_recomended = consulta_n_recomendados($id_perfil);
+            $recomended = consulta_recomendados($id_perfil, 1);
+            $n_recomended = consulta_n_recomendados($id_perfil, 1);
+            $proj_recomend = consulta_recomendados($id_perfil, 2);
+            $proj_n_recomend = consulta_n_recomendados($id_perfil, 2);
         }else{
             count_cicles($id_perfil);
             $balance = get_balance($id_perfil);
             
-            $recomended = recomendados($id_perfil, $balance[0]*$total_dps);
-            $n_recomended = n_recomendados($id_perfil, $balance[1]*$total_dps);
+            $recomended = recomendados($id_perfil, $balance[0]*$total_dps, 1);
+            $proj_recomend = recomendados($id_perfil, $balance[0]*$total_dps, 2);
+            $n_recomended = n_recomendados($id_perfil, $balance[1]*$total_dps, 1);
+            $proj_n_recomend = n_recomendados($id_perfil, $balance[1]*$total_dps, 2);
         }
         $table = [
             'comunidade' => $comunidade,
             'Recomendados' => $recomended,
-            'NRecomendados' => $n_recomended
+            'NRecomendados' => $n_recomended,
+            'ProjetosRec' => $proj_recomend,
+            'ProjetosNRec' => $proj_n_recomend
         ];
 
         return $table;
