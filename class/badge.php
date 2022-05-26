@@ -23,8 +23,7 @@
 
     function update_reputation($id_user, $rep){
       try{
-        $r = DBA::selectFirst('Badge', [], ['ID_perfil'=>$id_user]);
-        if(DBA::isResult($r)){
+        if(DBA::exists('Badge', ['ID_perfil'=>$id_user])){
           DBA::update('Badge', ['Reputacao'=>$rep], ['ID_perfil'=>$id_user]);
         }else{
           DBA::insert('Badge', ['ID_perfil'=>$id_user, 'Reputacao'=>$rep]);

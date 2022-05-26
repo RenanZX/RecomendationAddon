@@ -264,6 +264,8 @@ use GuzzleHttp\Client;
         '$comunidade' => $table['comunidade'],
         '$Recomendados' => $table['Recomendados'],
         '$NRecomendados' => $table['NRecomendados'],
+        '$ProjetosR' => $table['ProjetosRec'],
+        '$ProjetosNR' => $table['ProjetosNRec'],
         '$user_id' => $id,
         '$feedb' => DI::baseUrl()->get().'/addon/recomendapp/assets/options.png',
         '$level' => DI::baseUrl()->get().'/addon/recomendapp/assets/'.$badge_level.'.png',
