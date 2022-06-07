@@ -57,29 +57,29 @@ function get_likes($id){
   function compute_association_coment($id){
     $dps = [];
     try{
-      $q = DBA::p("SELECT t1.Nome FROM Disciplinas as t1, Bolha_recomendados as t2, Link_Tag as t3 WHERE t2.ID_origem_perfil = ? AND t2.ID_Tag = t3.ID_Tag AND t3.ID_disciplina = t1.ID  ORDER BY RAND() LIMIT 10", $id);
+      $q = DBA::p("SELECT t1.Nome, t3.Tag FROM Disciplinas as t1, Bolha_recomendados as t2, Link_Tag as t3 WHERE t2.ID_origem_perfil = ? AND t2.ID_Tag = t3.ID_Tag AND t3.ID_disciplina = t1.ID  ORDER BY RAND() LIMIT 2", $id);
       
       while($r = DBA::fetch($q)){
         //Logger::debug('QUERY RESULT?:'.json_encode($r));
-        if(!in_array($r['Nome'], $dps)){
-          array_push($dps,$r['Nome']);
+        if(!in_array([$r['Nome'], $r['Tag']], $dps)){
+          array_push($dps,[$r['Nome'], $r['Tag']]);
         }
       }
 
       if(empty($dps)){
-        $q = DBA::p('SELECT * FROM Disciplinas ORDER BY RAND()');
+        $q = DBA::p('SELECT t1.Nome, t3.Tag FROM Disciplinas as t1, Categorias as t2, Link_Tag as t3 WHERE t1.ID = t3.ID_disciplina AND t2.ID = t3.ID_Tag');
         while($r = DBA::fetch($q)){
-          if(!in_array($r['Nome'], $dps)){
-            array_push($dps, $r['Nome']);
+          if(!in_array([$r['Nome'], $r['Tag']], $dps)){
+            array_push($dps, [$r['Nome'], $r['Tag']]);
           }
         }
       }else{
-        $q = DBA::p("SELECT t1.Nome FROM Disciplinas as t1, Bolha_recomendados as t2, Link_Tag as t3 WHERE t2.ID_origem_perfil = ? AND t2.ID_Tag = t3.ID_Tag AND t3.ID_disciplina != t1.ID  ORDER BY RAND()", $id);
+        $q = DBA::p("SELECT t1.Nome, t3.Tag FROM Disciplinas as t1, Bolha_recomendados as t2, Link_Tag as t3 WHERE t2.ID_origem_perfil = ? AND t2.ID_Tag = t3.ID_Tag AND t3.ID_disciplina != t1.ID", $id);
       
         while($r = DBA::fetch($q)){
           //Logger::debug('QUERY RESULT?:'.json_encode($r));
-          if(!in_array($r['Nome'], $dps)){
-            array_push($dps,$r['Nome']);
+          if(!in_array([$r['Nome'], $r['Tag']], $dps)){
+            array_push($dps,[$r['Nome'], $r['Tag']]);
           }
         } 
       }
