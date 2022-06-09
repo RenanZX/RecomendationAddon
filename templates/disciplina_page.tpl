@@ -21,6 +21,7 @@
 {{else}}
 <div>
 <p> Não existem comentarios</p>
+<p> Compartilhe sua experiência e dê um feedback sobre o que achou desta disciplina </p>
 </div>
 {{/if}}
 </div>
