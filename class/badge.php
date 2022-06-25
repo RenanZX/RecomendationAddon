@@ -53,6 +53,45 @@
       return -1;
     }
 
+    function compute_meta($id_user, $likes_t, $deslikes_t){
+      try{
+        //Compara o desempenho de likes/deslikes atingido do dia anterior com o dia atual
+        $yesterday = date("Y-m-d", strtotime("yesterday"));
+        $r = DBA::selectFirst('DesempenhoDiario', ['Likes', 'Deslikes'], ['ID_perfil = ? AND DATE(Data) = ?',$id_user, $yesterday]);
+        if(DBA::isResult($r)){
+          $likes_y = $r['Likes'];
+          $deslikes_y = $r['Deslikes'];
+
+          if(($likes_y > $deslikes_y)&&($deslike > 0)){ //se tiveram mais likes no dia anterior a meta é que ele faça pelo menos 1 deslike no dia atual
+            return 0.1;
+          }else if(($deslikes_y > $likes_y)&&($like > 0)){ //se tiveram mais deslikes no dia anterior a meta é que ele faça pelo menos 1 like no dia atual
+            return 0.1;
+          }else if(($deslikes_y == $likes_y)&&($likes_t != $deslikes_t)){ //se iguais os likes e deslikes a meta é que ele de mais likes ou deslikes do dia atual
+            return 0.2;
+          }else{ //se a meta nao for comprida o nível do aluno regride um pouco
+            return -0.1;
+          }
+        }
+      }catch(Exception $e){
+        Logger::debug($e->getMessage());
+      }
+      return 0;
+    }
+
+    function update_desempenho($uid, $like, $deslike){
+      try{
+        $today = date('Y-m-d');
+        if(DBA::exists('DesempenhoDiario', ['ID_perfil = ? AND DATE(Data) = ?',$uid, $today])){
+          DBA::update('DesempenhoDiario', ['Likes'=>$like, 'Deslikes'=>$deslike],['ID_perfil = ? AND DATE(Data) = ?',$uid, $today]);
+        }else{
+          $itoday = date('Y-m-d H:i:s');
+          DBA::insert('DesempenhoDiario', ['ID_perfil'=>$uid,'Likes'=>$like, 'Deslikes'=>$deslike, 'Data'=>$itoday]);
+        }
+      }catch(Exception $e){
+        Logger::debug($e->getMessage());
+      }
+    }
+
     function compute_M1($uid, $rep){ //quantidade de mini badges recebidas pelo aluno
         $peso = 0;
         $cb = count_badges($uid);
@@ -74,9 +113,14 @@
     function compute_M2($uid, $rep){ //quantidade de likes e deslikes dados aos comentarios de outros alunos
       $w = 0;
       try{
-        $like = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>1]);
-        $deslike = DBA::count('Feedback_Comment_PF', ['ID_origem_perfil'=>$uid, 'Tipo'=>0]);
+        $today = date('Y-m-d');
+        
+        $like = DBA::count('Feedback_Comment_DP', ['ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?',$uid,1,$today]) + DBA::count('Feedback_Comment_PF', ['ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?',$uid,1,$today]); //contando likes
+        $deslike = DBA::count('Feedback_Comment_DP', ['ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?',$uid,0,$today]) + DBA::count('Feedback_Comment_PF', ['ID_origem_perfil = ? AND Tipo = ? AND DATE(Data) = ?',$uid,0,$today]); //contando deslikes
         $total = $like + $deslike;
+        if(($like > 0 && $deslike == 0) || ($deslike > 0 && $like == 0)){
+          $w-=0.1;
+        }
         if($total > 0){
           $p_deslike = $deslike/$total;
           $p_like = $like/$total;
@@ -94,6 +138,8 @@
             $w += 0.3;
           }
         }
+        update_desempenho($uid,$like,$deslike);
+        $w += compute_meta($uid, $like, $deslike); //adiciona no peso caso a meta tenha sido comprida
       }catch(Exception $e){
         Logger::debug($e->getMessage());
       }
