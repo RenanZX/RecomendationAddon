@@ -166,12 +166,13 @@ function get_likes($id){
 
   function update_like($id_coment, $id_user, $type){
     try{
+      $today = date('Y-m-d H:i:s');
       $consulta = ($type == '1'? 'Feedback_Comment_PF' : 'Feedback_Comment_DP');
       $q = DBA::select($consulta, [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
       if($r = DBA::fetch($q)){
         DBA::delete($consulta, ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>1]);
       }else{
-        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>1]);
+        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>1, 'Data'=>$today]);
       }
     }catch(Exception $e){
       Logger::debug($e->getMessage());
@@ -180,6 +181,7 @@ function get_likes($id){
 
   function update_deslike($id_coment, $id_user, $type){
     try{
+      $today = date('Y-m-d H:i:s');
       $consulta = ($type == '1'? 'Feedback_Comment_PF' : 'Feedback_Comment_DP');
       
       $q = DBA::select($consulta, [], ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment], []);
@@ -187,7 +189,7 @@ function get_likes($id){
       if($r = DBA::fetch($q)){
         DBA::delete($consulta, ['ID_origem_perfil'=>$id_user,'ID_coment'=>$id_coment, 'Tipo'=>0]);
       }else{
-        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>0]);
+        DBA::insert($consulta, ['ID_origem_perfil'=>$id_user, 'ID_coment'=>$id_coment, 'Tipo'=>0, 'Data'=>$today]);
       }
     }catch(Exception $e){
       Logger::debug($e->getMessage());

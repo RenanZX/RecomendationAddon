@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS Feedback_Comment_PF(
   ID_origem_perfil INTEGER,
   ID_coment INTEGER,
   Tipo INTEGER
+  Data DATETIME NOT NULL;
 );
 
 CREATE TABLE IF NOT EXISTS Categorias(
@@ -32,6 +33,14 @@ CREATE TABLE IF NOT EXISTS Badge(
   ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ID_perfil INTEGER,
   Reputacao DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS DesempenhoDiario(
+  ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID_perfil INTEGER,
+  Likes INTEGER,
+  Deslikes INTEGER,
+  Data DATETIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Bolha_recomendados(
@@ -68,6 +77,7 @@ CREATE TABLE IF NOT EXISTS Feedback_Comment_DP(
   ID_origem_perfil INTEGER,
   ID_coment INTEGER,
   Tipo INTEGER
+  Data DATETIME NOT NULL;
 );
 
 CREATE TABLE IF NOT EXISTS Feedback_Ranked_Recomendations(

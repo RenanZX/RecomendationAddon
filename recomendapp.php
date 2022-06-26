@@ -185,13 +185,18 @@ use GuzzleHttp\Client;
   function recomendapp_content(App $a){
     
     $user = '';
+    $show_form = false;
     if($a->isLoggedIn()){ //Testa se o usuario esta ativo
       $user = $a->getLoggedInUserNickname();
       $id = $a->getLoggedInUserId();
+      $profile_user = Profile::getByUID($id); //pega o perfil do usuario
+    }else{
+      $profile_user = null;
+      $id = null;
     }
-    $profile_user = Profile::getByUID($id); //pega o perfil do usuario
     if(DI::args()->getArgc() > 3 && DI::args()->getArgv()[1] != 'disciplinas'){
       $profile_id = getIdUserProfile($a); //Pega o profile da pagina do usuario
+      $show_form = ($id != $profile_id);
       $profile_page = Profile::getByUID($profile_id); //pega o perfil da pagina
     }
 
@@ -223,7 +228,6 @@ use GuzzleHttp\Client;
 
       //Logger::debug('profile: '.json_encode($profile));
       $perfil_coments = Comentarios\get_comentarios($profile_id);
-      $show_form = ($id != $profile_id);
 
       //Computar nivel do usuario e inserir a badge
       $dps_user = Comentarios\compute_association_coment($profile_id);
@@ -255,7 +259,6 @@ use GuzzleHttp\Client;
       $table = Recomendador\get_recommendations($id);
       //$table = ['Recomendados'=>[],'NRecomendados'=>[]];
       $badge_level = Badge\get_reputation_user($id);
-      $show_form = ($id != $profile_id);
 
       $content .= BaseProfile::getTabsHTML($a, 'recomendacoes', true,'profile', $user);
       $content .= Renderer::replaceMacros($tpl, [
