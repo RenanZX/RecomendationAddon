@@ -15,6 +15,8 @@
 
 </style>
 
+{{include file="addon/recomendapp/templates/like_form_style.tpl"}}
+
 {{if $show_level}}
 {{include file="addon/recomendapp/templates/badge_level.tpl"}}
 {{/if}}

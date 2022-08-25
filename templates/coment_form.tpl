@@ -196,7 +196,7 @@ function closeModal(){
       </div>
     </div>
   </div>
-  <input type='hidden' id='id_user' name='id_user' value='{{$user_id}}'' />
+  <input type='hidden' id='id_user' name='id_user' value='{{$user_id}}' />
   <input type='hidden' id='type' name='type' value='2' />
 </div>
 </form>
