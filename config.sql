@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS Feedback_Comment_PF(
   ID_coment INTEGER,
   Tipo INTEGER
   Data DATETIME NOT NULL;
+  Justificativa VARCHAR(500)
 );
 
 CREATE TABLE IF NOT EXISTS Categorias(
@@ -78,6 +79,7 @@ CREATE TABLE IF NOT EXISTS Feedback_Comment_DP(
   ID_coment INTEGER,
   Tipo INTEGER
   Data DATETIME NOT NULL;
+  Justificativa VARCHAR(500);
 );
 
 CREATE TABLE IF NOT EXISTS Feedback_Ranked_Recomendations(

@@ -64,7 +64,45 @@
     overflow: hidden;
 }
 
+#formlike {
+    display: none;
+}
+
+.like-cbox .like-form {
+    display: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 </style>
+<script>
+    function PostLike(event, id){ 
+        let val = Math.floor(Math.random() * 2)
+        let deslikeform = document.getElementById(`deslike-form-${id}`);
+        let likeform = document.getElementById(`like-form-${id}`);
+        if(deslikeform.style.display == 'block' || likeform.style.display == 'block'){
+          event.preventDefault();
+        }
+        if(val){
+          event.preventDefault();
+          deslikeform.style.display = 'none';
+          likeform.style.display = 'block';
+        }
+    }
+    function PostDeslike(event, id){ 
+        let val = Math.floor(Math.random() * 2)
+        let deslikeform = document.getElementById(`deslike-form-${id}`);
+        let likeform = document.getElementById(`like-form-${id}`);
+        if(deslikeform.style.display == 'block' || likeform.style.display == 'block'){
+          event.preventDefault();
+        }
+        if(val){
+          event.preventDefault();
+          likeform.style.display = 'none';
+          deslikeform.style.display = 'block';
+        }
+    }
+</script>
 <div class='coment-box-section'>
 <form method="post">
 {{if $user_id == $perfil_comment.id_perfil}}
@@ -82,11 +120,33 @@
  <input type='hidden' id='id_coment' name='id_coment' value='{{$perfil_comment.id}}' />
  </form>
  <form class='like-cbox' method="post">
-    <p><input type='image' id='like' name='like' value='like' src={{$like}} /> {{$perfil_comment.likes}} </p>
-    <p><input type='image' id='deslike' name='deslike' value='deslike' src={{$deslike}} /> {{$perfil_comment.deslikes}} </p>
+    <p><input type='image' id='like' name='like' value='like' src={{$like}} onclick='PostLike(event, {{$perfil_comment.id}})' /> {{$perfil_comment.likes}} </p>
+    <p><input type='image' id='deslike' name='deslike' value='deslike' src={{$deslike}} onclick='PostDeslike(event, {{$perfil_comment.id}})' /> {{$perfil_comment.deslikes}} </p>
     {{if $perfil_comment.badge}}
     <img id='badge' src={{$perfil_comment.badge}} />
     {{/if}}
+    <div class='like-form' id='like-form-{{$perfil_comment.id}}'>    
+        <div id='coment-section'>
+            <img id='profile' src={{$profile['photo']}} width='50px' height="50px"/>
+            <textarea id='like-coment-text' name='like-coment-text' placeholder="Justifique a adição ou remoção do seu like..." onclick="eraseInput(this);"></textarea>
+        </div>
+        <br/>
+        <div id='display-coment-button-like'>
+            <input type='submit' id='justificarLike' name='justificarLike' value='Justificar'/>
+            <input type='button' value='Cancelar' onclick='Cancelar()'/>
+        </div>
+    </div>
+    <div class='like-form' id='deslike-form-{{$perfil_comment.id}}'>    
+        <div id='coment-section'>
+            <img id='profile' src={{$profile['photo']}} width='50px' height="50px"/>
+            <textarea id='like-coment-text' name='like-coment-text' placeholder="Justifique a adição ou remoção do seu deslike..." onclick="eraseInput(this);"></textarea>
+        </div>
+        <br/>
+        <div id='display-coment-button-like'>
+            <input type='submit' id='justificarDeslike' name='justificarDeslike' value='Justificar'/>
+            <input type='button' value='Cancelar' onclick='Cancelar()'/>
+        </div>
+    </div>
     <input type='hidden' id='type' name='type' value='1' />
     <input type='hidden' id='type_coment' name='type_coment' value='1' />
     <input type='hidden' id='id' name='id' value='{{$user_id}}' />

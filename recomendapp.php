@@ -121,11 +121,11 @@ use GuzzleHttp\Client;
     if($_POST["type"] == '1'){ //Likes deslikes e deletar comentario
       if(array_key_exists('delete', $_POST)){
         Comentarios\delete_coment($_POST['id_coment']);
-      }else if(array_key_exists('like_x', $_POST)){
+      }else if(array_key_exists('like_x', $_POST) || (array_key_exists('justificarLike', $_POST))){
         if($_POST['type_coment'] == '2' || $_POST['id_profile_coment'] != $_POST['id']){ //checa se o aluno nao esta se endossando
           Comentarios\update_like($_POST['id_coment'],$_POST['id'], $_POST['type_coment']);
         }
-      }else if(array_key_exists('deslike_x', $_POST)){
+      }else if(array_key_exists('deslike_x', $_POST) || (array_key_exists('justificarDeslike', $_POST))){
         if($_POST['type_coment'] == '2' || $_POST['id_profile_coment'] != $_POST['id']){
           Comentarios\update_deslike($_POST['id_coment'],$_POST['id'], $_POST['type_coment']);
         }
